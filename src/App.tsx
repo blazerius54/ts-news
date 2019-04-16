@@ -1,28 +1,25 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
 import './App.css';
+import {getNews} from './api/news';
+import NewsItem from './components/NewsItem';
+import { INews } from './models/news';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
-}
+const App: React.FunctionComponent = () => {
+  const [news, setNews] = useState<INews[]>();
+
+
+  useEffect(() => {
+    getNews().then(response => setNews(response.data))
+  });
+
+  return (
+    <div className='app-wrapper'>
+      <h2>Here you see some fake data!!</h2>
+      {
+        news && news.map(item => <NewsItem key={item.id} item={item}/>)
+      }
+    </div>
+  )
+};
 
 export default App;
